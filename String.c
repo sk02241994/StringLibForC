@@ -1,5 +1,10 @@
 #include "String.h"
 
+/*
+    Method to compare two strings lexicographically
+    If  both strings are equal, 0 is returned else it returns
+    positive or negative values.
+*/
 int getCompareTo(String *self, Strings str){
     int i = strlen(self->strings);
     int j = strlen(str);
