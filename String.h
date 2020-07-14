@@ -28,6 +28,7 @@ struct strStruct{
     Strings strings;
     char (*charAt)(String *self, int);
     int (*compareTo) (String *self, Strings);
+    Strings (*concat) (String *self, Strings);
 };
 
 /*

@@ -1,6 +1,21 @@
 #include "String.h"
 
 /*
+    Method to concat strings if the size is found to be 0, it will return -1.
+*/
+Strings concatString (String *self, Strings string){
+    int i = strlen(string);
+    Strings charArr = (Strings)malloc(sizeof(char)*(strlen(self->strings) + i + 1));
+    if((NULL == charArr) || (0 == i)){
+        return -1;
+    }
+    strcpy(charArr, self->strings);
+    strcat(charArr, string);
+    return charArr;
+
+}
+
+/*
     Method to compare two strings lexicographically
     If  both strings are equal, 0 is returned else it returns
     positive or negative values.
@@ -44,6 +59,7 @@ String *init(){
     s->strings = NULL;
     s->charAt = &getCharAt;
     s->compareTo = &getCompareTo;
+    s->concat = &concatString;
     return s;
 }
 
