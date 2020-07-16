@@ -29,6 +29,8 @@ struct strStruct{
     char (*charAt)(String *self, int);
     int (*compareTo) (String *self, Strings);
     Strings (*concat) (String *self, Strings);
+    int (*contains)(String *self, Strings);
+    int (*endsWith)(String *self, Strings);
 };
 
 /*
