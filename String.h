@@ -31,6 +31,10 @@ struct strStruct{
     Strings (*concat) (String *self, Strings);
     int (*contains)(String *self, Strings);
     int (*endsWith)(String *self, Strings);
+    long (*hashCode) (Strings);
+    int (*equals) (String *self, Strings);
+    int (*equalsIgnoreCase) (String *self, Strings);
+    Strings (*toLowerCase) (Strings);
 };
 
 /*
