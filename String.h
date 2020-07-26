@@ -1,12 +1,12 @@
-#ifndef string.h
+#ifndef STRING_H
     #include <string.h>
-#endif // string
-#ifndef stdlib.h
+#endif
+#ifndef STDLIB_H
     #include <stdlib.h>
-#endif // stdlib
-#ifndef math.h
+#endif
+#ifndef MATH_H
     #include<math.h>
-#endif // math
+#endif
 
 
 

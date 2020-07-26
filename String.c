@@ -22,7 +22,7 @@ long hash_code(const Strings string){
 Strings to_lower(Strings string){
     int stringLength = strlen(string);
     if(stringLength == 0){
-        return -1;
+        return (Strings)-1;
     }
     Strings s = (Strings) malloc(sizeof(char) * stringLength + 1);
     strcpy(s, string);
@@ -100,7 +100,7 @@ Strings concat_string (String *self, Strings string){
     int i = strlen(string);
     Strings charArr = (Strings)malloc(sizeof(char)*(strlen(self->strings) + i + 1));
     if((NULL == charArr) || (0 == i)){
-        return -1;
+        return (Strings)-1;
     }
     strcpy(charArr, self->strings);
     strcat(charArr, string);
