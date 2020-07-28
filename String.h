@@ -35,6 +35,9 @@ struct strStruct{
     int (*equals) (String *self, Strings);
     int (*equalsIgnoreCase) (String *self, Strings);
     Strings (*toLowerCase) (Strings);
+    int (*indexOf) (String *self, Strings);
+    int (*indexOfWithStart) (String *self, Strings, int);
+    int (*isEmpty) (String *self);
 };
 
 /*

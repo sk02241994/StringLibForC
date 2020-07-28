@@ -1,6 +1,49 @@
 #include "String.h"
 
 /*
+    Method to check if the string is empty ie has no characters in it.
+*/
+int is_empty(String *self){
+    return strlen(self->strings) == 0 ? 1 : 0;
+}
+
+/*
+    Method to find the index of the substring
+*/
+int index_of_string(String *self, Strings stringToFind, int startPosition){
+    int count = 0;
+    int i = 0;
+    int stringToFindLen = strlen(stringToFind);
+    for(i = startPosition; self->strings[i] != '\0'; i++){
+        if(self->strings[i] == stringToFind[count]){
+            count++;
+        }
+        if(count == stringToFindLen){
+            break;
+        }
+    }
+
+    if(count != stringToFindLen){
+        return -1;
+    }
+    return (i - stringToFindLen + 1);
+}
+
+/*
+    Method to find the index of the substring starting from the desired position.
+*/
+int index_of_with_start(String *self, Strings stringToFind, int startPosition){
+    return index_of_string(self, stringToFind, startPosition);
+}
+
+/*
+    Method to find the index of the substring starting from initial position.
+*/
+int index_of(String *self, Strings stringToFind){
+    return index_of_string(self, stringToFind, 0);
+}
+
+/*
     Method to generate hash code for the given string.
 */
 long hash_code(const Strings string){
@@ -159,6 +202,9 @@ String *init(){
     s->equals = &is_equal;
     s->equalsIgnoreCase = &equals_ignore_case;
     s->toLowerCase = &to_lower;
+    s->indexOf = &index_of;
+    s->indexOfWithStart = &index_of_with_start;
+    s->isEmpty = &is_empty;
     return s == NULL ? NULL : s;
 }
 
