@@ -38,6 +38,9 @@ struct strStruct{
     int (*indexOf) (String *self, Strings);
     int (*indexOfWithStart) (String *self, Strings, int);
     int (*isEmpty) (String *self);
+    int (*lastIndexOf) (String *self, Strings);
+    int (*lastIndexOfWithStart) (String *self, Strings, int);
+    Strings (*replaceChar) (Strings, char, char);
 };
 
 /*

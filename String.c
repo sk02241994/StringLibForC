@@ -1,10 +1,55 @@
 #include "String.h"
 
 /*
+    Method to replace characters in a string.
+*/
+Strings replace_char(Strings str, char replaceFromChar, char charToReplace ){
+    Strings resultString = (Strings)malloc(sizeof(char) * strlen(str));
+    strcpy(resultString, str);
+    for(int i = 0; resultString[i] != '\0'; i++){
+        if(resultString[i] == replaceFromChar){
+            resultString[i] = charToReplace;
+        }
+    }
+    return resultString;
+}
+
+/*
     Method to check if the string is empty ie has no characters in it.
 */
 int is_empty(String *self){
     return strlen(self->strings) == 0 ? 1 : 0;
+}
+
+/*
+    Method to find the last index of the string.
+*/
+int last_index_of_string(String *self, Strings stringToFind, int startPosition){
+    int count = strlen(stringToFind);
+    int i = startPosition == 0 ? strlen(self->strings) : startPosition;
+    for(; i >= 0; i--){
+        if(self->strings[i] == stringToFind[count-1]){
+            count --;
+        }
+        if(count == 0){
+            break;
+        }
+    }
+    return i;
+}
+
+/*
+    Method to find the last index of the string given the start position.
+*/
+int last_index_of_with_start(String *self, Strings stringToFind, int startPosition){
+    return last_index_of_string(self, stringToFind, startPosition);
+}
+
+/*
+    Method to find the last index string mentioned.
+*/
+int last_index_of(String *self, Strings stringToFind){
+    return last_index_of_string(self, stringToFind, 0);
 }
 
 /*
@@ -205,6 +250,9 @@ String *init(){
     s->indexOf = &index_of;
     s->indexOfWithStart = &index_of_with_start;
     s->isEmpty = &is_empty;
+    s->lastIndexOf = &last_index_of;
+    s->lastIndexOfWithStart = &last_index_of_with_start;
+    s->replaceChar = &replace_char;
     return s == NULL ? NULL : s;
 }
 
