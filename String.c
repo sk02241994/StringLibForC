@@ -1,198 +1,283 @@
 #include "String.h"
 
 /*
+    Method to find the number of words present after splitting.
+*/
+int char_split_number(Strings str, Strings token) {
+  int count = 0;
+  char bufferArray[strlen(str)];
+  strcpy(bufferArray, str);
+  Strings tokenStr = strtok(bufferArray, token);
+  while(tokenStr != NULL) {
+    count++;
+    tokenStr = strtok(NULL, token);
+  }
+  return count;
+}
+
+/*
+    Method to split a string according to delimiters/tokes present and return array
+    of strings
+*/
+Strings* split_string(Strings str, Strings token) {
+  Strings *resultStrings = NULL;
+  char bufferString[strlen(str)];
+  Strings tokenBuffer;
+  int count = 0;
+
+  resultStrings = (Strings *)malloc(sizeof(Strings) * (char_split_number(str, token) + 1));
+  strcpy(bufferString, str);
+
+  for(tokenBuffer = strtok(bufferString, token); tokenBuffer != NULL; count++) {
+    resultStrings[count] = (Strings) malloc(sizeof(char) * strlen(tokenBuffer));
+    strcpy(resultStrings[count], tokenBuffer);
+    tokenBuffer = strtok(NULL, token);
+  }
+
+  resultStrings[count] = NULL;
+  return resultStrings;
+}
+
+/*
+    Method to replace substring with provided string.
+*/
+Strings replace_string(Strings str, Strings replaceFromString, Strings stringToReplace) {
+  Strings result = NULL;
+  int i, count = 0;
+  int newStringLen = strlen(stringToReplace);
+  int oldStringLen = strlen(replaceFromString);
+  for(i = 0; str[i] != '\0'; i++) {
+    if(strstr(&str[i], replaceFromString) == &str[i]) {
+      count++;
+      i += oldStringLen - 1;
+    }
+  }
+  result = (Strings)malloc(i + count * (newStringLen - oldStringLen) + 1);
+  i = 0;
+  while(*str) {
+    if(strstr(str, replaceFromString) == str) {
+      strcpy(&result[i], stringToReplace);
+      i += newStringLen;
+      str += oldStringLen;
+    } else {
+      result[i++] = *str++;
+    }
+  }
+  result[i] = '\0';
+  return result;
+}
+
+/*
     Method to replace characters in a string.
 */
-Strings replace_char(Strings str, char replaceFromChar, char charToReplace ){
-    Strings resultString = (Strings)malloc(sizeof(char) * strlen(str));
-    strcpy(resultString, str);
-    for(int i = 0; resultString[i] != '\0'; i++){
-        if(resultString[i] == replaceFromChar){
-            resultString[i] = charToReplace;
-        }
+Strings replace_char(Strings str, char replaceFromChar, char charToReplace) {
+  Strings resultString = (Strings)malloc(sizeof(char) * strlen(str));
+  strcpy(resultString, str);
+  for(int i = 0; resultString[i] != '\0'; i++) {
+    if(resultString[i] == replaceFromChar) {
+      resultString[i] = charToReplace;
     }
-    return resultString;
+  }
+  return resultString;
 }
 
 /*
     Method to check if the string is empty ie has no characters in it.
 */
-int is_empty(String *self){
-    return strlen(self->strings) == 0 ? 1 : 0;
+int is_empty(String *self) {
+  return strlen(self->strings) == 0 ? 1 : 0;
 }
 
 /*
     Method to find the last index of the string.
 */
-int last_index_of_string(String *self, Strings stringToFind, int startPosition){
-    int count = strlen(stringToFind);
-    int i = startPosition == 0 ? strlen(self->strings) : startPosition;
-    for(; i >= 0; i--){
-        if(self->strings[i] == stringToFind[count-1]){
-            count --;
-        }
-        if(count == 0){
-            break;
-        }
+int last_index_of_string(String *self, Strings stringToFind, int startPosition) {
+  int count = strlen(stringToFind);
+  int i = startPosition == 0 ? strlen(self->strings) : startPosition;
+  for(; i >= 0; i--) {
+    if(self->strings[i] == stringToFind[count-1]) {
+      count --;
     }
-    return i;
+    if(count == 0) {
+      break;
+    }
+  }
+  return i;
 }
 
 /*
     Method to find the last index of the string given the start position.
 */
-int last_index_of_with_start(String *self, Strings stringToFind, int startPosition){
-    return last_index_of_string(self, stringToFind, startPosition);
+int last_index_of_with_start(String *self, Strings stringToFind, int startPosition) {
+  return last_index_of_string(self, stringToFind, startPosition);
 }
 
 /*
     Method to find the last index string mentioned.
 */
-int last_index_of(String *self, Strings stringToFind){
-    return last_index_of_string(self, stringToFind, 0);
+int last_index_of(String *self, Strings stringToFind) {
+  return last_index_of_string(self, stringToFind, 0);
 }
 
 /*
     Method to find the index of the substring
 */
-int index_of_string(String *self, Strings stringToFind, int startPosition){
-    int count = 0;
-    int i = 0;
-    int stringToFindLen = strlen(stringToFind);
-    for(i = startPosition; self->strings[i] != '\0'; i++){
-        if(self->strings[i] == stringToFind[count]){
-            count++;
-        }
-        if(count == stringToFindLen){
-            break;
-        }
+int index_of_string(String *self, Strings stringToFind, int startPosition) {
+  int count = 0;
+  int i = 0;
+  int stringToFindLen = strlen(stringToFind);
+  for(i = startPosition; self->strings[i] != '\0'; i++) {
+    if(self->strings[i] == stringToFind[count]) {
+      count++;
     }
+    if(count == stringToFindLen) {
+      break;
+    }
+  }
 
-    if(count != stringToFindLen){
-        return -1;
-    }
-    return (i - stringToFindLen + 1);
+  if(count != stringToFindLen) {
+    return -1;
+  }
+  return (i - stringToFindLen + 1);
 }
 
 /*
     Method to find the index of the substring starting from the desired position.
 */
-int index_of_with_start(String *self, Strings stringToFind, int startPosition){
-    return index_of_string(self, stringToFind, startPosition);
+int index_of_with_start(String *self, Strings stringToFind, int startPosition) {
+  return index_of_string(self, stringToFind, startPosition);
 }
 
 /*
     Method to find the index of the substring starting from initial position.
 */
-int index_of(String *self, Strings stringToFind){
-    return index_of_string(self, stringToFind, 0);
+int index_of(String *self, Strings stringToFind) {
+  return index_of_string(self, stringToFind, 0);
 }
 
 /*
     Method to generate hash code for the given string.
 */
-long hash_code(const Strings string){
-    long hash = 0;
-    int stringLength = strlen(string);
-    if((hash == 0) &&  stringLength > 0){
-        char arr[stringLength];
-        strcpy(arr, string);
-        for(int i = 0; i < stringLength + 1; i++){
-            hash = 31 * hash + arr[i];
-        }
+long hash_code(const Strings string) {
+  long hash = 0;
+  int stringLength = strlen(string);
+  if((hash == 0) &&  stringLength > 0) {
+    char arr[stringLength];
+    strcpy(arr, string);
+    for(int i = 0; i < stringLength + 1; i++) {
+      hash = 31 * hash + arr[i];
     }
-    return hash;
+  }
+  return hash;
+}
+
+/*
+    Method to convert string to upper case.
+*/
+Strings to_upper(Strings string) {
+  int stringLength = strlen(string);
+  if(stringLength == 0) {
+    return (Strings)-1;
+  }
+  Strings s = (Strings) malloc(sizeof(char) * stringLength + 1);
+  strcpy(s, string);
+  for(int i = 0; i < stringLength + 1; i++) {
+    if(s[i] >= 'a' && s[i] <= 'z') {
+      s[i] = s[i] - 32;
+    }
+  }
+  return s;
 }
 
 /*
     Method to convert string to lower case.
 */
-Strings to_lower(Strings string){
-    int stringLength = strlen(string);
-    if(stringLength == 0){
-        return (Strings)-1;
+Strings to_lower(Strings string) {
+  int stringLength = strlen(string);
+  if(stringLength == 0) {
+    return (Strings)-1;
+  }
+  Strings s = (Strings) malloc(sizeof(char) * stringLength + 1);
+  strcpy(s, string);
+  for(int i = 0; i < stringLength + 1; i++) {
+    if(s[i] >= 'A' && s[i] <= 'Z') {
+      s[i] = s[i] + 32;
     }
-    Strings s = (Strings) malloc(sizeof(char) * stringLength + 1);
-    strcpy(s, string);
-    for(int i = 0; i < stringLength + 1; i++){
-        if(s[i] >= 'A' && s[i] <= 'Z'){
-            s[i] = s[i] + 32;
-        }
-    }
-    return s;
+  }
+  return s;
 }
 
 /*
     Method to compare strings ignoring the case of string.
 */
-int equals_ignore_case(String *self, Strings string){
-    return hash_code(to_lower(self->strings)) - hash_code(to_lower(string));
+int equals_ignore_case(String *self, Strings string) {
+  return hash_code(to_lower(self->strings)) - hash_code(to_lower(string));
 }
 
 /*
     Method to check if the entered string are equal.
 */
-int is_equal(String *self, Strings string){
-    return hash_code(self->strings) - hash_code(string);
+int is_equal(String *self, Strings string) {
+  return hash_code(self->strings) - hash_code(string);
 }
 
 /*
     Method to check if the given string ends with
     given sub-string.
 */
-int end_with(String *self, Strings string){
-    int m = strlen(self->strings);
-    int n = strlen(string);
-    int flag = -1;
-    int count = n;
-    for(int i = m; i >=0; i--){
-        if(self->strings[i] == string[count]){
-            count--;
-        }else{
-            count = n;
-        }
-        if(count == 0){
-            flag = 1;
-            break;
-        }
+int end_with(String *self, Strings string) {
+  int m = strlen(self->strings);
+  int n = strlen(string);
+  int flag = -1;
+  int count = n;
+  for(int i = m; i >=0; i--) {
+    if(self->strings[i] == string[count]) {
+      count--;
+    } else {
+      count = n;
     }
-    return (flag == 1) ? 1 : 0;
+    if(count == 0) {
+      flag = 1;
+      break;
+    }
+  }
+  return (flag == 1) ? 1 : 0;
 }
 
 /*
     Method to check if the string contains certain sub-string
 */
-int does_contains(String *self, Strings string){
-    int m = strlen(self->strings);
-    int n = strlen(string);
-    int flag = -1;
-    int count = 0;
-    for(int i = 0; i < m; i++){
-        if(self->strings[i] == string[count]){
-            count++;
-        }else{
-            count = 0;
-        }
-        if(count == n){
-            flag = 1;
-            break;
-        }
+int does_contains(String *self, Strings string) {
+  int m = strlen(self->strings);
+  int n = strlen(string);
+  int flag = -1;
+  int count = 0;
+  for(int i = 0; i < m; i++) {
+    if(self->strings[i] == string[count]) {
+      count++;
+    } else {
+      count = 0;
     }
-    return (flag == 1) ? 1 : 0;
+    if(count == n) {
+      flag = 1;
+      break;
+    }
+  }
+  return (flag == 1) ? 1 : 0;
 }
 
 /*
     Method to concat strings if the size is found to be 0, it will return -1.
 */
-Strings concat_string (String *self, Strings string){
-    int i = strlen(string);
-    Strings charArr = (Strings)malloc(sizeof(char)*(strlen(self->strings) + i + 1));
-    if((NULL == charArr) || (0 == i)){
-        return (Strings)-1;
-    }
-    strcpy(charArr, self->strings);
-    strcat(charArr, string);
-    return charArr;
+Strings concat_string(String *self, Strings string) {
+  int i = strlen(string);
+  Strings charArr = (Strings)malloc(sizeof(char)*(strlen(self->strings) + i + 1));
+  if((NULL == charArr) || (0 == i)) {
+    return (Strings)-1;
+  }
+  strcpy(charArr, self->strings);
+  strcat(charArr, string);
+  return charArr;
 
 }
 
@@ -201,22 +286,22 @@ Strings concat_string (String *self, Strings string){
     If  both strings are equal, 0 is returned else it returns
     positive or negative values.
 */
-int get_compare_to(String *self, Strings string){
-    int i = strlen(self->strings);
-    int j = strlen(string);
-    char arr1[i];
-    char arr2[j];
-    strcpy(arr1, self->strings);
-    strcpy(arr2, string);
-    int k = (int) fmin(i,j);
-    for(int m = 0; m < k; m++){
-        int n = arr1[m];
-        int o = arr2[m];
-        if(n != o){
-            return n - o;
-        }
+int get_compare_to(String *self, Strings string) {
+  int i = strlen(self->strings);
+  int j = strlen(string);
+  char arr1[i];
+  char arr2[j];
+  strcpy(arr1, self->strings);
+  strcpy(arr2, string);
+  int k = (int) fmin(i,j);
+  for(int m = 0; m < k; m++) {
+    int n = arr1[m];
+    int o = arr2[m];
+    if(n != o) {
+      return n - o;
     }
-    return i - j;
+  }
+  return i - j;
 }
 
 /*
@@ -225,34 +310,37 @@ int get_compare_to(String *self, Strings string){
     if the index is out of bound it will return 0
     if there is no string is NULL, it will return 0.
 */
-char get_char_at(String *self, int index){
-    if(self->strings != NULL && (index > 0 && index <= strlen(self->strings))){
-        return self->strings[index - 1];
-    }
-    return -1;
+char get_char_at(String *self, int index) {
+  if(self->strings != NULL && (index > 0 && index <= strlen(self->strings))) {
+    return self->strings[index - 1];
+  }
+  return -1;
 }
 
 /*
     Method to initialize the default values for String struct.
 */
-String *init(){
-    String *s = (String *) malloc(sizeof(String));
-    s->strings = NULL;
-    s->charAt = &get_char_at;
-    s->compareTo = &get_compare_to;
-    s->concat = &concat_string;
-    s->contains = &does_contains;
-    s->endsWith = &end_with;
-    s->hashCode = &hash_code;
-    s->equals = &is_equal;
-    s->equalsIgnoreCase = &equals_ignore_case;
-    s->toLowerCase = &to_lower;
-    s->indexOf = &index_of;
-    s->indexOfWithStart = &index_of_with_start;
-    s->isEmpty = &is_empty;
-    s->lastIndexOf = &last_index_of;
-    s->lastIndexOfWithStart = &last_index_of_with_start;
-    s->replaceChar = &replace_char;
-    return s == NULL ? NULL : s;
+String *init() {
+  String *s = (String *) malloc(sizeof(String));
+  s->strings = NULL;
+  s->charAt = &get_char_at;
+  s->compareTo = &get_compare_to;
+  s->concat = &concat_string;
+  s->contains = &does_contains;
+  s->endsWith = &end_with;
+  s->hashCode = &hash_code;
+  s->equals = &is_equal;
+  s->equalsIgnoreCase = &equals_ignore_case;
+  s->toLowerCase = &to_lower;
+  s->toUpperCase = &to_upper;
+  s->indexOf = &index_of;
+  s->indexOfWithStart = &index_of_with_start;
+  s->isEmpty = &is_empty;
+  s->lastIndexOf = &last_index_of;
+  s->lastIndexOfWithStart = &last_index_of_with_start;
+  s->replaceChar = &replace_char;
+  s->replaceString = &replace_string;
+  s->split = &split_string;
+  return s == NULL ? NULL : s;
 }
 

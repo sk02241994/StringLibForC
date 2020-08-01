@@ -1,5 +1,5 @@
 # String library for C
-## This library is an attenpted replication of JAVA string library.
+## This library is an experimental replication of JAVA string library.
 
 ###### Methods present
 - **charAt** 				-> Method to get the character at specified index.
@@ -11,9 +11,12 @@
 - **equals**				-> Method to check if the string are equal.
 - **equalsIgnoreCase**		-> Method to check if the string are equal ignoring the case of the string.
 - **toLowerCase**			-> Method to convert string to lower case.
+- **toUpperCase**			-> Method to convert string to upper case.
 - **indexOf**				-> Method to find index of the given substring.
 - **indexOfWithStart**		-> Method to find index of the given substring starting from specified index.
 - **isEmpty**				-> Method to check if the string is empty. (Length is checked.)
 - **lastIndexOf**			-> Method to find the last index substring mentioned.
 - **lastIndexOfWithStart**	-> Method to find the last index substring mentioned starting from specified index.
 - **replaceChar**			-> Method to replace character.
+- **replaceString**			-> Method to replace string.
+- **split**					-> Method to split the string into array of strings.
