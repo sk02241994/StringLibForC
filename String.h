@@ -42,6 +42,8 @@ struct strStruct {
   Strings(*replaceChar)(Strings, char, char);
   Strings(*replaceString)(Strings, Strings, Strings);
   Strings *(*split)(Strings, Strings);
+  Strings (*trim) (Strings);
+  Strings (*subString) (Strings, int, int);
 };
 
 /*

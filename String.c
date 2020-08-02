@@ -1,9 +1,37 @@
 #include "String.h"
 
 /*
+    Method to find the substring of given string.
+*/
+static Strings sub_string(Strings str, int start, int end){
+    Strings result = (Strings)malloc(sizeof(char) * (end - start));
+    int j = 0;
+    for(int i = start; i < end; i++){
+        result[j++] = str[i];
+    }
+    result[j] = '\0';
+    return result;
+}
+
+/*
+    Method to trim a string.
+*/
+static Strings trim_string(Strings str) {
+  int i = strlen(str);
+  int j = 0;
+  while((j < i) && str[j] <= ' '){
+    j++;
+  }
+  while((j < i) && str[i-1] <= ' '){
+    i--;
+  }
+  return j > 0 || i < strlen(str) ? sub_string(str, j, i) : str;
+}
+
+/*
     Method to find the number of words present after splitting.
 */
-int char_split_number(Strings str, Strings token) {
+static int char_split_number(Strings str, Strings token) {
   int count = 0;
   char bufferArray[strlen(str)];
   strcpy(bufferArray, str);
@@ -19,7 +47,7 @@ int char_split_number(Strings str, Strings token) {
     Method to split a string according to delimiters/tokes present and return array
     of strings
 */
-Strings* split_string(Strings str, Strings token) {
+static Strings* split_string(Strings str, Strings token) {
   Strings *resultStrings = NULL;
   char bufferString[strlen(str)];
   Strings tokenBuffer;
@@ -41,7 +69,7 @@ Strings* split_string(Strings str, Strings token) {
 /*
     Method to replace substring with provided string.
 */
-Strings replace_string(Strings str, Strings replaceFromString, Strings stringToReplace) {
+static Strings replace_string(Strings str, Strings replaceFromString, Strings stringToReplace) {
   Strings result = NULL;
   int i, count = 0;
   int newStringLen = strlen(stringToReplace);
@@ -70,7 +98,7 @@ Strings replace_string(Strings str, Strings replaceFromString, Strings stringToR
 /*
     Method to replace characters in a string.
 */
-Strings replace_char(Strings str, char replaceFromChar, char charToReplace) {
+static Strings replace_char(Strings str, char replaceFromChar, char charToReplace) {
   Strings resultString = (Strings)malloc(sizeof(char) * strlen(str));
   strcpy(resultString, str);
   for(int i = 0; resultString[i] != '\0'; i++) {
@@ -84,14 +112,14 @@ Strings replace_char(Strings str, char replaceFromChar, char charToReplace) {
 /*
     Method to check if the string is empty ie has no characters in it.
 */
-int is_empty(String *self) {
+static int is_empty(String *self) {
   return strlen(self->strings) == 0 ? 1 : 0;
 }
 
 /*
     Method to find the last index of the string.
 */
-int last_index_of_string(String *self, Strings stringToFind, int startPosition) {
+static int last_index_of_string(String *self, Strings stringToFind, int startPosition) {
   int count = strlen(stringToFind);
   int i = startPosition == 0 ? strlen(self->strings) : startPosition;
   for(; i >= 0; i--) {
@@ -108,21 +136,21 @@ int last_index_of_string(String *self, Strings stringToFind, int startPosition) 
 /*
     Method to find the last index of the string given the start position.
 */
-int last_index_of_with_start(String *self, Strings stringToFind, int startPosition) {
+static int last_index_of_with_start(String *self, Strings stringToFind, int startPosition) {
   return last_index_of_string(self, stringToFind, startPosition);
 }
 
 /*
     Method to find the last index string mentioned.
 */
-int last_index_of(String *self, Strings stringToFind) {
+static int last_index_of(String *self, Strings stringToFind) {
   return last_index_of_string(self, stringToFind, 0);
 }
 
 /*
     Method to find the index of the substring
 */
-int index_of_string(String *self, Strings stringToFind, int startPosition) {
+static int index_of_string(String *self, Strings stringToFind, int startPosition) {
   int count = 0;
   int i = 0;
   int stringToFindLen = strlen(stringToFind);
@@ -144,21 +172,21 @@ int index_of_string(String *self, Strings stringToFind, int startPosition) {
 /*
     Method to find the index of the substring starting from the desired position.
 */
-int index_of_with_start(String *self, Strings stringToFind, int startPosition) {
+static int index_of_with_start(String *self, Strings stringToFind, int startPosition) {
   return index_of_string(self, stringToFind, startPosition);
 }
 
 /*
     Method to find the index of the substring starting from initial position.
 */
-int index_of(String *self, Strings stringToFind) {
+static int index_of(String *self, Strings stringToFind) {
   return index_of_string(self, stringToFind, 0);
 }
 
 /*
     Method to generate hash code for the given string.
 */
-long hash_code(const Strings string) {
+static long hash_code(const Strings string) {
   long hash = 0;
   int stringLength = strlen(string);
   if((hash == 0) &&  stringLength > 0) {
@@ -174,7 +202,7 @@ long hash_code(const Strings string) {
 /*
     Method to convert string to upper case.
 */
-Strings to_upper(Strings string) {
+static Strings to_upper(Strings string) {
   int stringLength = strlen(string);
   if(stringLength == 0) {
     return (Strings)-1;
@@ -192,7 +220,7 @@ Strings to_upper(Strings string) {
 /*
     Method to convert string to lower case.
 */
-Strings to_lower(Strings string) {
+static Strings to_lower(Strings string) {
   int stringLength = strlen(string);
   if(stringLength == 0) {
     return (Strings)-1;
@@ -210,14 +238,14 @@ Strings to_lower(Strings string) {
 /*
     Method to compare strings ignoring the case of string.
 */
-int equals_ignore_case(String *self, Strings string) {
+static int equals_ignore_case(String *self, Strings string) {
   return hash_code(to_lower(self->strings)) - hash_code(to_lower(string));
 }
 
 /*
     Method to check if the entered string are equal.
 */
-int is_equal(String *self, Strings string) {
+static int is_equal(String *self, Strings string) {
   return hash_code(self->strings) - hash_code(string);
 }
 
@@ -225,7 +253,7 @@ int is_equal(String *self, Strings string) {
     Method to check if the given string ends with
     given sub-string.
 */
-int end_with(String *self, Strings string) {
+static int end_with(String *self, Strings string) {
   int m = strlen(self->strings);
   int n = strlen(string);
   int flag = -1;
@@ -247,7 +275,7 @@ int end_with(String *self, Strings string) {
 /*
     Method to check if the string contains certain sub-string
 */
-int does_contains(String *self, Strings string) {
+static int does_contains(String *self, Strings string) {
   int m = strlen(self->strings);
   int n = strlen(string);
   int flag = -1;
@@ -269,7 +297,7 @@ int does_contains(String *self, Strings string) {
 /*
     Method to concat strings if the size is found to be 0, it will return -1.
 */
-Strings concat_string(String *self, Strings string) {
+static Strings concat_string(String *self, Strings string) {
   int i = strlen(string);
   Strings charArr = (Strings)malloc(sizeof(char)*(strlen(self->strings) + i + 1));
   if((NULL == charArr) || (0 == i)) {
@@ -286,7 +314,7 @@ Strings concat_string(String *self, Strings string) {
     If  both strings are equal, 0 is returned else it returns
     positive or negative values.
 */
-int get_compare_to(String *self, Strings string) {
+static int get_compare_to(String *self, Strings string) {
   int i = strlen(self->strings);
   int j = strlen(string);
   char arr1[i];
@@ -310,7 +338,7 @@ int get_compare_to(String *self, Strings string) {
     if the index is out of bound it will return 0
     if there is no string is NULL, it will return 0.
 */
-char get_char_at(String *self, int index) {
+static char get_char_at(String *self, int index) {
   if(self->strings != NULL && (index > 0 && index <= strlen(self->strings))) {
     return self->strings[index - 1];
   }
@@ -341,6 +369,8 @@ String *init() {
   s->replaceChar = &replace_char;
   s->replaceString = &replace_string;
   s->split = &split_string;
+  s->trim = &trim_string;
+  s->subString = &sub_string;
   return s == NULL ? NULL : s;
 }
 
