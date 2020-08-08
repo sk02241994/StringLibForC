@@ -19,6 +19,6 @@
 - **lastIndexOfWithStart**	-> Method to find the last index substring mentioned starting from specified index.
 - **replaceChar**			-> Method to replace character.
 - **replaceString**			-> Method to replace string.
-- **split**					-> Method to split the string into array of strings.
-- **trim**					-> Method to trim white space.
+- **split**					-> Method to split the string into array of strings. (Uses strtok to split)
+- **trim**					-> Method to remove extra white space that is before or after the entered string.
 - **subString**				-> Method to return substring from provided index.

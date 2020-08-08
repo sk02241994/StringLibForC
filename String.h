@@ -1,12 +1,8 @@
-#ifndef STRING_H
 #include <string.h>
-#endif
-#ifndef STDLIB_H
 #include <stdlib.h>
-#endif
-#ifndef MATH_H
-#include<math.h>
-#endif
+#include <math.h>
+#include <ctype.h>
+
 
 /*
     Type defs for char pointer
@@ -23,22 +19,21 @@ typedef struct strStruct String;
     1. charAt -> to get character at specified index
 */
 struct strStruct {
-  Strings strings;
-  char (*charAt)(String *self, int);
-  int (*compareTo)(String *self, Strings);
-  Strings(*concat)(String *self, Strings);
-  int (*contains)(String *self, Strings);
-  int (*endsWith)(String *self, Strings);
+  char (*charAt)(Strings, int);
+  int (*compareTo)(Strings, Strings);
+  Strings(*concat)(Strings, Strings);
+  int (*contains)(Strings, Strings);
+  int (*endsWith)(Strings, Strings);
   long (*hashCode)(Strings);
-  int (*equals)(String *self, Strings);
-  int (*equalsIgnoreCase)(String *self, Strings);
+  int (*equals)(Strings, Strings);
+  int (*equalsIgnoreCase)(Strings, Strings);
   Strings(*toLowerCase)(Strings);
   Strings(*toUpperCase)(Strings);
-  int (*indexOf)(String *self, Strings);
-  int (*indexOfWithStart)(String *self, Strings, int);
-  int (*isEmpty)(String *self);
-  int (*lastIndexOf)(String *self, Strings);
-  int (*lastIndexOfWithStart)(String *self, Strings, int);
+  int (*indexOf)(Strings, Strings);
+  int (*indexOfWithStart)(Strings, Strings, int);
+  int (*isEmpty)(Strings);
+  int (*lastIndexOf)(Strings, Strings);
+  int (*lastIndexOfWithStart)(Strings, Strings, int);
   Strings(*replaceChar)(Strings, char, char);
   Strings(*replaceString)(Strings, Strings, Strings);
   Strings *(*split)(Strings, Strings);
