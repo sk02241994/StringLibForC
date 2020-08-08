@@ -213,9 +213,11 @@ static Strings to_upper(Strings string) {
   if(stringLength == 0) {
     return (Strings)-1;
   }
-  Strings s = (Strings) malloc(sizeof(char) * stringLength + 1);
-  strcpy(s, string);
-  for(int i = 0; i < stringLength + 1; i++) {
+  Strings s = strdup(string);
+  if(s == NULL){
+    return s;
+  }
+  for(int i = 0; s[i] != '\0'; i++) {
     if(s[i] >= 'a' && s[i] <= 'z') {
       s[i] = s[i] - 32;
     }
@@ -231,9 +233,11 @@ static Strings to_lower(Strings string) {
   if(stringLength == 0) {
     return (Strings)-1;
   }
-  Strings s = (Strings) malloc(sizeof(char) * stringLength + 1);
-  strcpy(s, string);
-  for(int i = 0; i < stringLength + 1; i++) {
+  Strings s = strdup(string);
+  if(s == NULL){
+    return s;
+  }
+  for(int i = 0; s[i] != '\0'; i++) {
     if(s[i] >= 'A' && s[i] <= 'Z') {
       s[i] = s[i] + 32;
     }
